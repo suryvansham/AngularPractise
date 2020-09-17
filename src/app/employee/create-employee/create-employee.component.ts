@@ -26,4 +26,17 @@ export class CreateEmployeeComponent implements OnInit {
   onSubmit():void{
     console.log(this.employeeForm.value);
   }
+
+  onLoadDataClick(): void{
+    this.employeeForm.setValue({
+      fullName : 'Amit Raghuvanshi',
+      email : 'a@gmail.com',
+      skills : {
+        skillName : 'C#',
+      expInYrs : 2,
+      proficiency : 'beginner'
+      }
+      
+    });
+  }
 }
