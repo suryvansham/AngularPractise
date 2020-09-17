@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
+import { Validator } from '@angular/forms';
 
 @Component({
   selector: 'app-create-employee',
@@ -8,19 +10,26 @@ import { FormGroup, FormControl } from '@angular/forms';
 })
 export class CreateEmployeeComponent implements OnInit {
 
-  constructor() { }
+  constructor(private fb : FormBuilder) { }
   employeeForm : FormGroup;
   ngOnInit() {
-    this.employeeForm = new FormGroup({
-      fullName : new FormControl(),
-      email : new FormControl(),
-      skills: new FormGroup({
-        skillName : new FormControl(),
-        expInYrs : new FormControl(),
-        proficiency : new FormControl()
+    this.employeeForm = this.fb.group({
+      fullName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(10)]],
+      email : [''],
+      skills: this.fb.group({
+        skillName : [''],
+        expInYrs : [''],
+        proficiency : ['']
       })
     });
 
+    this.employeeForm.get('fullName').valueChanges.subscribe(value=>{
+      console.log(value);
+    });
+
+    this.employeeForm.valueChanges.subscribe(value=>{
+      console.log(JSON.stringify(value));
+    })
     
   }
   onSubmit():void{
@@ -39,4 +48,5 @@ export class CreateEmployeeComponent implements OnInit {
       
     });
   }
+
 }
