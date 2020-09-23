@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { FormBuilder } from '@angular/forms';
 import { Validator } from '@angular/forms';
 
@@ -33,6 +33,7 @@ export class CreateEmployeeComponent implements OnInit {
     
   }
   onSubmit():void{
+    this.logKeyValuePair(this.employeeForm);
     console.log(this.employeeForm.value);
   }
 
@@ -46,6 +47,19 @@ export class CreateEmployeeComponent implements OnInit {
       proficiency : 'beginner'
       }
       
+    });
+  }
+
+  logKeyValuePair(group : FormGroup) : void{
+    var data = Object.keys(group.controls);
+    Object.keys(group.controls).forEach((key : string)=>{
+       const abstractControl  = group.get(key);
+       if(abstractControl instanceof FormGroup){
+         this.logKeyValuePair(abstractControl);
+       }
+       else{
+         console.log('Key ' + key + ',' + 'Value ' + abstractControl.value);
+       }
     });
   }
 
